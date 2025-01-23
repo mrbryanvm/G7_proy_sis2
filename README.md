@@ -1,4 +1,4 @@
-# biblioteca
+# SISTEMA DE INFORMACION PARA BIBLIOTECA
 <h1>Gestor de biblioteca</h1> 
 <h2>Acerca del Proyecto</h2>
 El presente proyecto es para un sistema de información de biblioteca universitaria, diseñado para atender solamente a estudiantes y profesores con el propósito de promover un mejor sistema y gestión en dicha biblioteca. 
