@@ -33,6 +33,8 @@ public class MiVentana extends JFrame {
         JTextField tex1 = new JTextField(20);
         JLabel label2 = new JLabel("Contraseña:");
         JTextField tex2 = new JTextField(20);
+        
+        JLabel label3 = new JLabel("BIENVENIDO");
 
 
         // colores de los componenetes
@@ -47,11 +49,16 @@ public class MiVentana extends JFrame {
         // color jlabel
          label1.setForeground(Color.BLUE);
          label2.setForeground(Color.BLUE);
+
+         label3.setForeground(Color.WHITE);
+
          
 
         // cambiar tmano de la letra jablel
         label1.setFont(new Font("Arial", Font.BOLD, 18));
         label2.setFont(new Font("Arial", Font.BOLD, 18));
+
+        label3.setFont(new Font("Arial", Font.BOLD, 35));
 
 
         // cambiar tamano y letra del txt field
@@ -67,12 +74,16 @@ public class MiVentana extends JFrame {
         label2.setBounds(60, 90, 150, 40);
         tex2.setBounds(60, 130, 180, 30);
 
+        label3.setBounds(100, 20, 250, 50);
+
         // poner los componentes al subpanel
 
         subPanel.add(tex1);
         subPanel.add(tex2);
         subPanel.add(label1);
         subPanel.add(label2);
+
+        panelCentral.add(label3);
 
         // crear botn 
         JButton boton = new JButton("Iniciar Sesion");
@@ -123,7 +134,7 @@ JLabel etiquetaImagen2 = new JLabel(imagenRedimensionada2);
 
         // acomodar la imagen 
         etiquetaImagen.setBounds(425, 0, 425, 600); 
-        etiquetaImagen2.setBounds(0, 0, 150, 100);
+        etiquetaImagen2.setBounds(50, 0, 150, 100);
         // anadir la inagen al panel central
         panelCentral.add(etiquetaImagen);
         panelNorte.add(etiquetaImagen2);
