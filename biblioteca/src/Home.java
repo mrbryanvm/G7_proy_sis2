@@ -32,6 +32,12 @@ public class Home extends JFrame {
         JButton botonLogin = Plantilla.crearBoton("Login");
         JButton botonRegistro =Plantilla.crearBoton("Registrarse");
         botonLogin.setBounds(50, 20, botonLogin.getPreferredSize().width, botonLogin.getPreferredSize().height);
+        botonLogin.addActionListener(new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+             Login login = new Login();
+                  }});
+
 
         botonRegistro.setBounds(50, 70, botonRegistro.getPreferredSize().width, botonRegistro.getPreferredSize().height);
 

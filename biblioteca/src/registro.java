@@ -161,7 +161,6 @@ public void llenardatos() {
     // Agregar el botón en la parte inferior
     panel3.add(btnRegistrar, BorderLayout.SOUTH);
 
-    // Forzar el redibujado del JFrame
     frame.revalidate();
     frame.repaint();
 
