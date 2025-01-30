@@ -60,6 +60,10 @@ public class usuario {
     public String getTipo_usuario(){
         return this.tipo_usuario;
             }
-            
-
+    
+    //Validaciones
+    private boolean nombreValido(String nombre){
+        return nombre != null && !nombre.trim().isEmpty() && nombre.trim().split("\\s+") <=2;
+    }
+     
 }
