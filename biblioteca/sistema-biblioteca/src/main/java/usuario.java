@@ -122,7 +122,7 @@ public class usuario {
         return ci;
     }
     public String getTipo_usuario(){
-        return this.tipo_usuario;
+        return tipo_usuario;
     }
     
     //Validaciones
@@ -135,11 +135,11 @@ public class usuario {
     }
 
     private boolean telefonoValido(int telefono){
-        return  String.valueOf(telefono).length() == 8;     //Tomando en cuenta un numero de celular del estudiante o docente
+        return  String.valueOf(telefono).length() == 8 && telefono > 0;     //Tomando en cuenta un numero de celular del estudiante o docente
     }
 
     private boolean codSisValido(int codSis){
-        return String.valueOf(codSis).length() == 9;
+        return String.valueOf(codSis).length() == 9 && codSis > 0;
     }
    
 }

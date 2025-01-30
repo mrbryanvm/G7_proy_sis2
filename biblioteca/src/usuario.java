@@ -99,7 +99,7 @@ public class usuario {
    }
 
    public void settipo_usuario(String tipo_usuario){
-    this.tipo_usuario=tipo_usuario;
+        this.tipo_usuario=tipo_usuario;
    }
    
    //Obtener los datos del estudiante
@@ -122,7 +122,7 @@ public class usuario {
         return ci;
     }
     public String getTipo_usuario(){
-        return this.tipo_usuario;
+        return tipo_usuario;
     }
     
     //Validaciones
