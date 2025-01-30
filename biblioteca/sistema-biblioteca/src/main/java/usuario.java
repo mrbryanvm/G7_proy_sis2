@@ -76,13 +76,17 @@ public class usuario {
    }
 
    public void setci(int ci){
-    this.ci=ci;
-   }
-   public void setsis(int sis){
-        if(ci > 0){
-            this.ci = ci;
+        if(ci>0){
+            this.ci=ci;
         }else {
             throw new IllegalArgumentException("CI inválido.");
+        }
+   }
+   public void setsis(int sis){
+        if(codSisValido(sis)){
+            this.sis = sis;
+        }else {
+            throw new IllegalArgumentException("Codigo SIS inválido.");
         }
    }
 
@@ -123,7 +127,7 @@ public class usuario {
     
     //Validaciones
     private boolean nombreValido(String nombre){
-        return nombre != null && !nombre.trim().isEmpty();  //&& nombre.trim().split("\\s+")<=2;
+        return nombre != null && !nombre.trim().isEmpty();
     }
 
     private boolean correoValido(String correo){
