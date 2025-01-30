@@ -69,6 +69,10 @@ public class usuario {
     private boolean correoValido(String correo){
         return correo != null && correo.matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$");
     }
+
+    private boolean telefonoValido(int telefono){
+        return  String.valueOf(telefono).length() == 8;     //Tomando en cuenta un numero de celular del estudiante o docente
+    }
     
      
 }
