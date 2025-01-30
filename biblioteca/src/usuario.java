@@ -73,6 +73,10 @@ public class usuario {
     private boolean telefonoValido(int telefono){
         return  String.valueOf(telefono).length() == 8;     //Tomando en cuenta un numero de celular del estudiante o docente
     }
+
+    private boolean codSisValido(int codSis){
+        return String.valueOf(codSis).length() == 9;
+    }
     
      
 }
