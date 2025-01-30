@@ -8,13 +8,38 @@ public class usuario {
     private String tipo_usuario; 
     
     public usuario(String nombre,String apellido,String correo,int ci,int sis,int telefono,String tipo_usuario){
-    this.nombre=nombre;
-    this.apellido=apellido;
-    this.correo=correo;
-    this.ci=ci;
-    this.sis=sis;
-    this.telefono=telefono;
-    this.tipo_usuario=tipo_usuario;
+        if(nombreValido(nombre) && nombreValido(apellido)){
+            this.nombre = nombre;
+            this.apellido = apellido;
+        }else {
+            throw new IllegalArgumentException("Nombre o apellido inválido. Asegúrese de que no estén vacíos o contengan más de dos palabras.");
+        }
+
+        if(correoValido(correo)){
+            this.correo = correo;
+        }else {
+            throw new IllegalArgumentException("Correo electrónico inválido.");
+        }
+
+        if(ci > 0){
+            this.ci = ci;
+        }else {
+            throw new IllegalArgumentException("CI inválido.");
+        }
+
+        if(codSisValido(sis)){
+            this.sis=sis;
+        }else {
+            throw new IllegalArgumentException("Codigo SIS inválido.");
+        }
+
+        if(telefonoValido(telefono)){
+            this.telefono=telefono;
+        }else {
+            throw new IllegalArgumentException("Número de teléfono inválido.");
+        }
+
+        this.tipo_usuario=tipo_usuario;
     }
 
    //Establecer lso datos del estudiante 
@@ -77,6 +102,5 @@ public class usuario {
     private boolean codSisValido(int codSis){
         return String.valueOf(codSis).length() == 9;
     }
-    
-     
+   
 }
