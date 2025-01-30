@@ -65,5 +65,10 @@ public class usuario {
     private boolean nombreValido(String nombre){
         return nombre != null && !nombre.trim().isEmpty() && nombre.trim().split("\\s+") <=2;
     }
+
+    private boolean correoValido(String correo){
+        return correo != null && correo.matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$");
+    }
+    
      
 }
