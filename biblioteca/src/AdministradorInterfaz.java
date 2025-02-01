@@ -34,9 +34,9 @@ public void llenardatos() {
     JPanel panel3 = Plantilla.crearPanelAzul();
 
     // Crear el título
-    JLabel lblTitulo = new JLabel("REGISTRO ADIMISTRADOR");
+    JLabel lblTitulo = new JLabel("REGISTRO ADIMINISTRADOR");
     lblTitulo.setFont(new Font("Arial", Font.BOLD, 32));
-    lblTitulo.setBounds(280, 30, 430, 50);
+    lblTitulo.setBounds(280, 30, 460, 50);
     lblTitulo.setForeground(PaletaColor.COLORCELESTECLARO);
     panel2.add(lblTitulo); // Colocar el título en panel2
 
