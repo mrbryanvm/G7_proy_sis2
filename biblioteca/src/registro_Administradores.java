@@ -40,13 +40,13 @@ public void llenardatos() {
     JPanel panel3 = plantilla.crearPanelAzul();
 
     // Crear el título
-    JLabel lblTitulo = new JLabel("Registro de Estudiantes", JLabel.CENTER);
+    JLabel lblTitulo = new JLabel("Registro de Administradores", JLabel.CENTER);
     lblTitulo.setFont(new Font("Arial", Font.BOLD, 28));
     panel2.add(lblTitulo); // Colocar el título en panel2
 
     // Crear un panel para los campos de entrada
     JPanel panel = new JPanel(new GridLayout(7, 2, 10, 10)); // 7 filas, 2 columnas con espaciado
-
+     panel.setPreferredSize(new Dimension(300, 300));
     // Crear etiquetas y campos de texto
     JLabel jlNombre = new JLabel("Nombres:");
     CurvearTextArea txtNombre = plantilla.crearTextArea();
@@ -134,13 +134,10 @@ public boolean BD(){
             }
             String query = "INSERT INTO administrador (nombre,apellido,telefono,contrasena) VALUES (?, ?, ?, ?)";
             PreparedStatement stmt = conexion.prepareStatement(query);
-            stmt.setString(1, est.getNombre());
-            stmt.setString(2, est.getApellido());
-            stmt.setString(3, est.getCorreo());
-            stmt.setInt(4, est.getCi());
-            stmt.setInt(5, est.getSis());
-            stmt.setInt(6, est.getTelefono());
-            stmt.setString(7, est.getTipo_usuario());
+            stmt.setString(1, admin.getNombre());
+            stmt.setString(2, admin.getApellido());
+            stmt.setInt(3, admin.getTelefono());
+            stmt.setString(4, admin.getContrasena());
 
             stmt.executeUpdate();
             return true;

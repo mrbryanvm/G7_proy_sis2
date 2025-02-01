@@ -29,9 +29,10 @@ public void setnombre(String nombre){
     public String getApellido(){
     return this.apellido;
     }
-    public int getContrasena(){
+    public int getTelefono(){
         return telefono; }
-    public String getTelefono(){
+
+    public String getContrasena(){
         return contrasena;}
 
     public String GenerarContrasena(){
