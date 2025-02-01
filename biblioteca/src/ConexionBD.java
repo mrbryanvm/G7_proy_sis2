@@ -17,11 +17,11 @@ public class ConexionBD{
 
                 // Inicializa la conexión
                 conexion = DriverManager.getConnection(URL, usuario, contrasena);
-                System.out.println("¡Conexión exitosa!");
+               // System.out.println("¡Conexión exitosa!");
             } catch (ClassNotFoundException e) {
-                System.out.println("Error: No se encontró el controlador JDBC: " + e.getMessage());
+               // System.out.println("Error: No se encontró el controlador JDBC: " + e.getMessage());
             } catch (SQLException e) {
-                System.out.println("Error al conectar con la base de datos: " + e.getMessage());
+               // System.out.println("Error al conectar con la base de datos: " + e.getMessage());
             }
         }
         return conexion; // Devuelve la conexión existente o null si falló
@@ -31,7 +31,7 @@ public class ConexionBD{
         if (conexion != null) {
             try {
                 conexion.close();
-                System.out.println("Conexión cerrada correctamente.");
+               // System.out.println("Conexión cerrada correctamente.");
             } catch (Exception e) {
                 e.printStackTrace();
             }
