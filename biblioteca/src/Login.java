@@ -1,5 +1,7 @@
 import javax.swing.*;
 
+import com.mysql.cj.xdevapi.AddResultBuilder;
+
 import Frontend.*;
 
 import java.awt.*;
@@ -8,8 +10,16 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Login {
+
+    private usuario usuario ;
+    private Administrador administrador;
+    private String tipo;
+    private LoginSuccessListener loginSuccessListener;
+
+   
 
     public static void main(String[] args){
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -54,7 +64,7 @@ public class Login {
         JLabel lblApellido = new JLabel("Apellido:");
         CurvearTextArea txtApellido = plantilla.crearTextArea();
 
-        JLabel lblSis = new JLabel("SIS:");
+        JLabel lblSis = new JLabel("SIS o Contrasena:");
         JPasswordField txtSis = new JPasswordField(); 
 
         // Agregar etiquetas y campos al panel
@@ -90,10 +100,21 @@ public class Login {
                 // Verificar las credenciales con la base de datos
                 boolean loginExitoso = verificarLogin(nombre, apellido, sis);
                 if (loginExitoso) {
+
+                    
                     JOptionPane.showMessageDialog(frame, "Inicio de sesión exitoso.");
                     frame.dispose();  
 
-                    //Colocar el siguinete metodo
+                    if (loginSuccessListener != null) {
+                        loginSuccessListener.onLoginSuccess(); // Notificar a Home
+                    }
+                    if(tipo=="administrador"){
+                    SesionUsuario.iniciarSesion(administrador);
+                    new PerfilAdministrador();}
+                    else{
+                        SesionUsuario.iniciarSesion(usuario);
+                        new Perfil();
+                    }
                 } else {
                     JOptionPane.showMessageDialog(frame, "Nombre, Apellido o SIS incorrectos.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -107,29 +128,73 @@ public class Login {
     }
 
     public boolean verificarLogin(String nombre, String apellido, String sis) {
-        try {
-            Connection conexion = ConexionBD.getConexion(); 
-            if (conexion == null) {
-                JOptionPane.showMessageDialog(null, "La conexión a la base de datos no se pudo procesar. Intente nuevamente más tarde.", "Error de conexión", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-
-            // Consulta para verificar el nombre, apellido y el SIS en la base de datos
-            String query = "SELECT * FROM usuario WHERE nombre = ? AND apellido = ? AND sis = ?";
-            PreparedStatement stmt = conexion.prepareStatement(query);
-            stmt.setString(1, nombre);
-            stmt.setString(2, apellido);
-            stmt.setString(3, sis);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                // Si se encuentran los datos en la base de datos, el login es exitoso
-                return true;
-            }
-            return false; // Si no se encuentran los datos
-        } catch (Exception e) {
-            e.printStackTrace();
+    try {
+        Connection conexion = ConexionBD.getConexion(); 
+        if (conexion == null) {
+            JOptionPane.showMessageDialog(null, "La conexión a la base de datos no se pudo procesar. Intente nuevamente más tarde.", "Error de conexión", JOptionPane.ERROR_MESSAGE);
             return false;
         }
+
+        // Primero, busca en la tabla de usuario por nombre, apellido y sis
+        String query = "SELECT * FROM usuario WHERE nombre = ? AND apellido = ? AND sis = ?";
+        PreparedStatement stmt = conexion.prepareStatement(query);
+        stmt.setString(1, nombre);
+        stmt.setString(2, apellido);
+        stmt.setString(3, sis);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            // Si se encuentra el usuario en la base de datos
+            String nom = rs.getString("nombre");
+            String ape = rs.getString("apellido");
+            String cor = rs.getString("correo");
+            int ci = rs.getInt("ci");
+            int si = rs.getInt("sis");
+            int tel = rs.getInt("telefono");
+            String tu = rs.getString("tipo_usuario");
+
+            usuario = new usuario(nom, ape, cor, ci, si, tel, tu);
+            tipo = tu; // Guardamos el tipo de usuario (si es "usuario")
+            return true;
+        } else {
+            // Si no se encuentra en la tabla de usuario, busca en la tabla de administrador
+            String query1 = "SELECT * FROM administrador WHERE nombre = ? AND apellido = ? AND contrasena = ?";
+            PreparedStatement stmt1 = conexion.prepareStatement(query1);
+            stmt1.setString(1, nombre);
+            stmt1.setString(2, apellido);
+            stmt1.setString(3, sis);  // Aquí se usa el 'sis' como la contrasena para el administrador.
+            ResultSet rs1 = stmt1.executeQuery();
+
+            if (rs1.next()) {
+                String nom = rs1.getString("nombre");
+                String ape = rs1.getString("apellido");
+               // String cor = rs1.getString("contrasena");
+                int ci = rs1.getInt("ci");  
+                int tel = rs1.getInt("telefono");
+                String co = rs1.getString("correo");
+                String di = rs1.getString("direccion");
+    
+                administrador = new Administrador(nom, ape,ci, tel, co,di);
+                tipo = "administrador";  // Si se encuentra en la tabla administrador, asignamos "administrador"
+                return true;
+            }
+        }
+        return false; // Si no se encuentran los datos en ninguna tabla
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error con la base de datos. Intente nuevamente.", "Error de base de datos", JOptionPane.ERROR_MESSAGE);
+        return false;
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error desconocido. Intente nuevamente.", "Error", JOptionPane.ERROR_MESSAGE);
+        return false;
+    }
+}
+
+
+    public interface LoginSuccessListener {
+        void onLoginSuccess();
+    }
+
+    public void addLoginSuccessListener(LoginSuccessListener listener) {
+        this.loginSuccessListener = listener;
     }
 }

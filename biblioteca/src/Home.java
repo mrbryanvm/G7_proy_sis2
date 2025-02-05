@@ -36,6 +36,15 @@ public class Home extends JFrame {
           @Override
           public void actionPerformed(ActionEvent e) {
              Login login = new Login();
+
+
+              // Verificar si el usuario inicia sesión correctamente
+        login.addLoginSuccessListener(new Login.LoginSuccessListener() {
+          @Override
+          public void onLoginSuccess() {
+              dispose(); // Cierra la ventana Home
+          }
+      });
                   }});
 
 
@@ -44,7 +53,29 @@ public class Home extends JFrame {
         botonRegistro.addActionListener(new ActionListener() {
           @Override
           public void actionPerformed(ActionEvent e) {
-             registro registrar = new registro();
+
+            String[] opciones = {"Usuario(Estudiante o Docente)", "Administrador"};
+            String seleccion = (String) JOptionPane.showInputDialog(
+                    null,
+                    "Seleccione el tipo de usuario:",
+                    "Registro",
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    opciones,
+                    opciones[0]
+            );
+
+            // Abrir la ventana de registro correspondiente
+            if (seleccion != null) {
+                switch (seleccion) {
+                    case "Usuario(Estudiante o Docente)":
+                        new registro();
+                        break;
+                    case "Administrador":
+                        new registro_Administradores();
+                        break;
+                }
+            }
                   }});
   
 

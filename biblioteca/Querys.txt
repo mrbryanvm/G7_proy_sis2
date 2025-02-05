@@ -1,0 +1,10 @@
+Crear tabla de libros:
+
+CREATE TABLE libro (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    autor VARCHAR(255) NOT NULL,
+    anio INT NOT NULL,
+    cantidad_disponible INT NOT NULL CHECK (cantidad_disponible >= 0),
+    UNIQUE (nombre, autor)
+);
