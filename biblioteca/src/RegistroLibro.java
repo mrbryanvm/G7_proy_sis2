@@ -4,13 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import Frontend.CurvearTextArea;
 import Frontend.PaletaColor;
 import Frontend.Plantilla;
 
 public class RegistroLibro {
-    public static void main(String[] args) {
+    public static void main(String[]args){
         java.awt.EventQueue.invokeLater(() -> new RegistroLibro());
     }
 
@@ -21,7 +22,7 @@ public class RegistroLibro {
     public void llenardatos() {
         JFrame frame = new JFrame("Registro de Libros");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(650, 500);
+        frame.setSize(650, 400);
         frame.setLocationRelativeTo(null);
 
         Plantilla plantilla = new Plantilla();
@@ -35,7 +36,7 @@ public class RegistroLibro {
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 28));
         panel2.add(lblTitulo);
 
-        JPanel panel = new JPanel(new GridLayout(6, 2, 10, 10));
+        JPanel panel = new JPanel(new GridLayout(4, 2, 10, 10));
 
         JLabel lblNombre = new JLabel("Nombre del libro:");
         CurvearTextArea txtNombre = plantilla.crearTextArea();
@@ -43,30 +44,20 @@ public class RegistroLibro {
         JLabel lblAutor = new JLabel("Autor:");
         CurvearTextArea txtAutor = plantilla.crearTextArea();
 
-        JLabel lblEditorial = new JLabel("Editorial:");
-        CurvearTextArea txtEditorial = plantilla.crearTextArea();
-
         JLabel lblAnio = new JLabel("Año de publicación:");
         CurvearTextArea txtAnio = plantilla.crearTextArea();
 
-        JLabel lblIsbn = new JLabel("ISBN:");
-        CurvearTextArea txtIsbn = plantilla.crearTextArea();
-
-        JLabel lblDisponible = new JLabel("Disponible:");
-        JCheckBox chkDisponible = new JCheckBox("Sí", true);
+        JLabel lblCantidad = new JLabel("Cantidad disponible:");
+        CurvearTextArea txtCantidad = plantilla.crearTextArea();
 
         panel.add(lblNombre);
         panel.add(txtNombre);
         panel.add(lblAutor);
         panel.add(txtAutor);
-        panel.add(lblEditorial);
-        panel.add(txtEditorial);
         panel.add(lblAnio);
         panel.add(txtAnio);
-        panel.add(lblIsbn);
-        panel.add(txtIsbn);
-        panel.add(lblDisponible);
-        panel.add(chkDisponible);
+        panel.add(lblCantidad);
+        panel.add(txtCantidad);
 
         panel3.add(panel, BorderLayout.CENTER);
         panel2.add(panel3, BorderLayout.CENTER);
@@ -79,19 +70,15 @@ public class RegistroLibro {
                 try {
                     String nombre = txtNombre.getText();
                     String autor = txtAutor.getText();
-                    String editorial = txtEditorial.getText();
                     int anio = Integer.parseInt(txtAnio.getText());
-                    String isbn = txtIsbn.getText();
-                    boolean disponible = chkDisponible.isSelected();
+                    int cantidad = Integer.parseInt(txtCantidad.getText());
 
-                    boolean registroExitoso = registrarLibro(nombre, autor, editorial, anio, isbn, disponible);
+                    boolean registroExitoso = registrarLibro(nombre, autor, anio, cantidad);
                     if (registroExitoso) {
                         txtNombre.setText("");
                         txtAutor.setText("");
-                        txtEditorial.setText("");
                         txtAnio.setText("");
-                        txtIsbn.setText("");
-                        chkDisponible.setSelected(true);
+                        txtCantidad.setText("");
                         JOptionPane.showMessageDialog(frame, "Registro exitoso.");
                         frame.dispose();
                     } else {
@@ -108,25 +95,43 @@ public class RegistroLibro {
         frame.setVisible(true);
     }
 
-
-
-
-    public boolean registrarLibro(String nombre, String autor, String editorial, int anio, String isbn, boolean disponible) {
+    public boolean registrarLibro(String nombre, String autor, int anio, int cantidad) {
         try {
             Connection conexion = ConexionBD.getConexion();
             if (conexion == null) {
                 JOptionPane.showMessageDialog(null, "Error de conexión a la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
-            String query = "INSERT INTO libro (nombre, autor, editorial, anio, isbn, disponible) VALUES (?, ?, ?, ?, ?, ?)";
-            PreparedStatement stmt = conexion.prepareStatement(query);
-            stmt.setString(1, nombre);
-            stmt.setString(2, autor);
-            stmt.setString(3, editorial);
-            stmt.setInt(4, anio);
-            stmt.setString(5, isbn);
-            stmt.setBoolean(6, disponible);
-            stmt.executeUpdate();
+
+            // Verificar si el libro ya existe
+            String checkQuery = "SELECT cantidad_disponible FROM libro WHERE nombre = ? AND autor = ?";
+            PreparedStatement checkStmt = conexion.prepareStatement(checkQuery);
+            checkStmt.setString(1, nombre);
+            checkStmt.setString(2, autor);
+            ResultSet rs = checkStmt.executeQuery();
+
+            if (rs.next()) {
+                // Si ya existe, actualizar cantidad
+                int cantidadActual = rs.getInt("cantidad_disponible");
+                String updateQuery = "UPDATE libro SET cantidad_disponible = ? WHERE nombre = ? AND autor = ?";
+                PreparedStatement updateStmt = conexion.prepareStatement(updateQuery);
+                updateStmt.setInt(1, cantidadActual + cantidad);
+                updateStmt.setString(2, nombre);
+                updateStmt.setString(3, autor);
+                updateStmt.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Libro ya registrado. Se actualizó la cantidad.");
+            } else {
+                // Si no existe, insertarlo
+                String insertQuery = "INSERT INTO libro (nombre, autor, anio, cantidad_disponible) VALUES (?, ?, ?, ?)";
+                PreparedStatement insertStmt = conexion.prepareStatement(insertQuery);
+                insertStmt.setString(1, nombre);
+                insertStmt.setString(2, autor);
+                insertStmt.setInt(3, anio);
+                insertStmt.setInt(4, cantidad);
+                insertStmt.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Libro registrado exitosamente.");
+            }
+
             return true;
         } catch (Exception e) {
             e.printStackTrace();

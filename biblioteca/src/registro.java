@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 import Frontend.CurvearTextArea;
 import Frontend.PaletaColor;
@@ -169,31 +171,35 @@ public void llenardatos() {
 }
 
 
-public boolean BD(){
-
- try {
-            Connection conexion = ConexionBD.getConexion(); // Obtén la conexión
-            if (conexion == null) {
-                JOptionPane.showMessageDialog(null, "La conexión a la base de datos no se pudo procesar. Intente nuevamente más tarde.", "Error de conexión", JOptionPane.ERROR_MESSAGE);
-                return false; // Termina el método si no hay conexión
-            }
-            String query = "INSERT INTO usuario (nombre,apellido,correo,ci,sis,telefono,tipo_usuario) VALUES (?, ?, ?, ?, ?, ? ,?)";
-            PreparedStatement stmt = conexion.prepareStatement(query);
-            stmt.setString(1, est.getNombre());
-            stmt.setString(2, est.getApellido());
-            stmt.setString(3, est.getCorreo());
-            stmt.setInt(4, est.getCi());
-            stmt.setInt(5, est.getSis());
-            stmt.setInt(6, est.getTelefono());
-            stmt.setString(7, est.getTipo_usuario());
-
-            stmt.executeUpdate();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+public boolean BD() {
+    try {
+        Connection conexion = ConexionBD.getConexion(); // Obtén la conexión
+        if (conexion == null) {
+            JOptionPane.showMessageDialog(null, "No se pudo conectar a la base de datos. Intente más tarde.", "Error de conexión", JOptionPane.ERROR_MESSAGE);
+            return false; // Termina el método si no hay conexión
         }
 
+        String query = "INSERT INTO usuario (nombre, apellido, correo, ci, sis, telefono, tipo_usuario) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement stmt = conexion.prepareStatement(query);
+        stmt.setString(1, est.getNombre());
+        stmt.setString(2, est.getApellido());
+        stmt.setString(3, est.getCorreo());
+        stmt.setInt(4, est.getCi());
+        stmt.setInt(5, est.getSis());
+        stmt.setInt(6, est.getTelefono());
+        stmt.setString(7, est.getTipo_usuario());
+
+        stmt.executeUpdate();
+        stmt.close();
+        return true;
+    } catch (SQLIntegrityConstraintViolationException e) {
+        JOptionPane.showMessageDialog(null, "Ya existe un usuario con los mismos datos. Intente con valores diferentes.", "Error de duplicado", JOptionPane.ERROR_MESSAGE);
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Ocurrió un error con la base de datos. Intente de nuevo.", "Error SQL", JOptionPane.ERROR_MESSAGE);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Algo salió mal. Intente de nuevo.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    return false;
 }
 
 
