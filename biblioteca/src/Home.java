@@ -18,7 +18,7 @@ public class Home extends JFrame {
         setTitle("Home");
         setSize(850, 600); // Tamaño del JFrame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        setLocationRelativeTo(null);
         // paneles
         JPanel panelNaranja =Plantilla.crearPanelNaranja();
         JPanel panelAzul = Plantilla.crearPanelAzul();

@@ -92,7 +92,7 @@ public class Prestamo {
 
                 if(verificarLibro()){
 
-                    boolean exito = registrarPrestamo(carrera, fechaPrestamo, fechaDevolucion);
+                    boolean exito = registrarPrestamo(carrera, fechaPrestamo, fechaDevolucion,nombre_libro,autor);
                     if (exito) {
                         JOptionPane.showMessageDialog(frame, "Préstamo registrado exitosamente.");
                         new ReportePrestamo(nombre_libro, autor, fechaPrestamo, fechaDevolucion);
@@ -128,7 +128,7 @@ public class Prestamo {
     }
 
 
-    public  boolean registrarPrestamo(String carrera, Date fechaPrestamo, Date fechaDevolucion) {
+    public  boolean registrarPrestamo(String carrera, Date fechaPrestamo, Date fechaDevolucion,String nombreLibro,String autor) {
         try {
             Connection conexion = ConexionBD.getConexion();
             if (conexion == null) {
@@ -138,12 +138,14 @@ public class Prestamo {
 
             int contras=usuario.getSis();
             //Insertar registro de Prestamo
-            String insertQuery = "INSERT INTO prestamo (carrera , fecha_prestamo, fecha_devolucion,usuario_sis) VALUES (?, ?, ?, ?)";
+            String insertQuery = "INSERT INTO prestamo (carrera , fecha_prestamo, fecha_devolucion, usuario_sis, nombre_libro, autor) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement insertStmt = conexion.prepareStatement(insertQuery);
             insertStmt.setString(1, carrera);
             insertStmt.setDate(2, fechaPrestamo);
             insertStmt.setDate(3, fechaDevolucion);
             insertStmt.setInt(4,contras);
+            insertStmt.setString(5,nombreLibro);
+            insertStmt.setString(6,autor);
             insertStmt.executeUpdate();
             //Actulizar los libros disponibles ya ue se acab de registrar
             String updateQuery = "UPDATE libro SET cantidad_disponible = ? WHERE nombre = ? AND autor = ?";

@@ -5,6 +5,10 @@ import Frontend.PaletaColor;
 import Frontend.Plantilla;
 import java.awt.*;
 import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 
@@ -15,6 +19,7 @@ public class Perfil extends JFrame{
         setTitle("perfil");
         setSize(850, 600); 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
 
     
     // Crear panel naranja
@@ -58,7 +63,13 @@ public class Perfil extends JFrame{
         ImageIcon imagenRedimensionada = new ImageIcon(imagen);
         JLabel etiquetaImagen = new JLabel(imagenRedimensionada);
         etiquetaImagen.setBounds(135, 10, 180, 180); 
-
+ // Agregar evento de clic edl icono
+        etiquetaImagen.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+               new Perfil1();
+            }
+        });
 
     //componentes
     String[] tipos = {"CATALOGO DE BIBLIOTECA ", "Titulo", "Autor"};
@@ -87,8 +98,16 @@ public class Perfil extends JFrame{
     JButton btnBuscar = Plantilla.crearBoton("Buscar");
     btnBuscar.setBounds(73, 160, btnBuscar.getPreferredSize().width, btnBuscar.getPreferredSize().height);
 
-  //  JButton btnPrestarse = Plantilla.crearBoton("Prestarse");
- //   btnPrestarse.setBounds(540, 400, btnPrestarse.getPreferredSize().width, btnPrestarse.getPreferredSize().height);
+    JButton atras = new JButton("Inicio");
+    atras.setBounds(740, 400, 100,60);
+    atras.setBackground(PaletaColor.COLORBLANCO);
+    atras.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            dispose();
+            new Home();
+        }
+    });
 
 
 
@@ -105,6 +124,7 @@ public class Perfil extends JFrame{
   //  panel3.add(btnPrestarse);
     panel3.add(jlSubtitulo);
     panel3.add(tabla);
+    panel3.add(atras);
 
 
     setVisible(true);

@@ -1,4 +1,4 @@
-Crear tabla de libros:
+
 
 CREATE TABLE libro (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -8,3 +8,49 @@ CREATE TABLE libro (
     cantidad_disponible INT NOT NULL CHECK (cantidad_disponible >= 0),
     UNIQUE (nombre, autor)
 );
+
+
+CREATE TABLE Usuario (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    apellido VARCHAR(50) NOT NULL,
+    correo VARCHAR(100) NOT NULL,
+    ci VARCHAR(20) NOT NULL UNIQUE,
+    sis INT NOT NULL UNIQUE,
+    telefono VARCHAR(20),
+    tipo_usuario VARCHAR(50) NOT NULL,
+    CONSTRAINT UQ_Nombre_Apellido UNIQUE (nombre, apellido)
+);
+
+
+CREATE TABLE Administrador (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    apellido VARCHAR(50) NOT NULL,
+    contrasena VARCHAR(255) NOT NULL,
+    ci VARCHAR(20) NOT NULL UNIQUE,
+    telefono VARCHAR(20),
+    correo VARCHAR(100),
+    direccion VARCHAR(255),
+    CONSTRAINT UQ_Nombre_Apellido UNIQUE (nombre, apellido),
+    CONSTRAINT UQ_Contrasena UNIQUE (contrasena)
+);
+
+CREATE TABLE IF NOT EXISTS prestamo (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    carrera VARCHAR(255) NOT NULL,
+    fecha_prestamo DATE NOT NULL,
+    fecha_devolucion DATE NOT NULL,
+    usuario_sis INT
+);
+
+CREATE TABLE devolucion (
+    id_devolucion INT AUTO_INCREMENT PRIMARY KEY,
+    fecha_devuelto DATE NOT NULL,
+    nombre_libro VARCHAR(255) NOT NULL,
+    autor VARCHAR(255) NOT NULL,
+    usuario_sis INT NOT NULL,
+    tipo_usuario VARCHAR(50) NOT NULL
+
+);
+

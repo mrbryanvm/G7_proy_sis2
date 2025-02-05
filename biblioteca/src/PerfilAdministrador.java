@@ -8,17 +8,25 @@ import javax.swing.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
 
 public class PerfilAdministrador extends JFrame{
 
+    public static void main(String[] args) {
+        new PerfilAdministrador();
+    }
 
     public PerfilAdministrador() {
         setTitle("perfil");
         setSize(850, 650); 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        setLocationRelativeTo(null);
     
     // Crear panel naranja
     JPanel panel2 = Plantilla.crearPanelNaranja();
@@ -61,6 +69,13 @@ public class PerfilAdministrador extends JFrame{
         ImageIcon imagenRedimensionada = new ImageIcon(imagen);
         JLabel etiquetaImagen = new JLabel(imagenRedimensionada);
         etiquetaImagen.setBounds(135, 5, 180, 180); 
+         // Agregar evento de clic edl icono
+        etiquetaImagen.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+               new Perfil1();
+            }
+        });
 
 
     //componentes
@@ -90,28 +105,22 @@ public class PerfilAdministrador extends JFrame{
     JButton btnBuscar = Plantilla.crearBoton("Buscar");
     btnBuscar.setBounds(68, 135, btnBuscar.getPreferredSize().width, btnBuscar.getPreferredSize().height);
 
-    JButton btnPrestamos = Plantilla.crearBoton("Prestamos");
-    btnPrestamos.setBounds(40, 230, btnPrestamos.getPreferredSize().width, btnPrestamos.getPreferredSize().height);
 
     JButton btnNoDevueltos = Plantilla.crearBoton("No Devueltos");
-    btnNoDevueltos.setBounds(40, 290, btnNoDevueltos.getPreferredSize().width, btnNoDevueltos.getPreferredSize().height);
+    btnNoDevueltos.setBounds(40, 230, btnNoDevueltos.getPreferredSize().width, btnNoDevueltos.getPreferredSize().height);
  
     JButton btnFrecuente = Plantilla.crearBoton("Frecuentes");
-    btnFrecuente.setBounds(40, 350, btnFrecuente.getPreferredSize().width, btnFrecuente.getPreferredSize().height);
+    btnFrecuente.setBounds(40, 290, btnFrecuente.getPreferredSize().width, btnFrecuente.getPreferredSize().height);
 
     JButton btnReportarse = Plantilla.crearBoton("Reportes");
-    btnReportarse.setBounds(40, 410, btnReportarse.getPreferredSize().width, btnReportarse.getPreferredSize().height);
+    btnReportarse.setBounds(40, 350, btnReportarse.getPreferredSize().width, btnReportarse.getPreferredSize().height);
 
     JButton btnRoja = Plantilla.crearBoton("Ver Lista Roja");
     btnRoja.setBounds(230, 230, btnRoja.getPreferredSize().width, btnRoja.getPreferredSize().height);
 
-    JButton btnPrestar = Plantilla.crearBoton("Prestar Libro");
-    btnPrestar.setBounds(230, 290, btnPrestar.getPreferredSize().width, btnPrestar.getPreferredSize().height);
-
-
 
     JButton btnRegistrar = Plantilla.crearBoton("Registrar Libro");
-    btnRegistrar.setBounds(230, 350, btnRegistrar.getPreferredSize().width, btnRegistrar.getPreferredSize().height);
+    btnRegistrar.setBounds(230, 290, btnRegistrar.getPreferredSize().width, btnRegistrar.getPreferredSize().height);
     btnRegistrar.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -121,14 +130,44 @@ public class PerfilAdministrador extends JFrame{
 
 
 
-
-
-
-
-
     JButton btnDevolucion = Plantilla.crearBoton("Devoluciones");
-    btnDevolucion.setBounds(230, 410, btnDevolucion.getPreferredSize().width, btnDevolucion.getPreferredSize().height);
-    //anadir componentes
+    btnDevolucion.setBounds(230, 350, btnDevolucion.getPreferredSize().width, btnDevolucion.getPreferredSize().height);
+    btnDevolucion.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+           
+                Administrador usuario = SesionUsuario.getAdminActual();
+                if (usuario != null) {
+                    // Si el usuario es administrador, pedir el SIS del alumno
+                    String sisAlumno = JOptionPane.showInputDialog("Ingrese el SIS del alumno:");
+                    String nomLibro = JOptionPane.showInputDialog("Ingrese el Nombre del Libro:");
+                    String autor = JOptionPane.showInputDialog("Ingrese el Autor del Libro:");
+                    if (sisAlumno != null && !sisAlumno.trim().isEmpty() && nomLibro !=null && autor!=null && !nomLibro.trim().isEmpty()&& !autor.trim().isEmpty()) {
+                        if (verificarUsuarioEnBD(sisAlumno)) {
+                            new Devolucion(nomLibro, autor);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "El usuario con SIS " + sisAlumno + " no existe.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }  
+        }
+    });
+
+
+
+    JButton atras = new JButton("Inicio");
+    atras.setBounds(40, 450, 100,60);
+    atras.setBackground(PaletaColor.COLORBLANCO);
+    atras.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            dispose();
+            new Home();
+        }
+    });
+
+
+
 
     add(panel3);
     add(panel2);
@@ -137,25 +176,45 @@ public class PerfilAdministrador extends JFrame{
     panel.add(comboTipoBusqueda);
     panel.add(txtBuscar);
     panel.add(btnBuscar);
-    panel3.add(btnPrestamos);
     panel3.add(jlSubtitulo);
     panel3.add(tabla);
-    panel3.add(btnPrestar);
     panel3.add(btnNoDevueltos);
     panel3.add(btnDevolucion);
     panel3.add(btnFrecuente);
     panel3.add(btnRegistrar);
     panel3.add(btnReportarse);
     panel3.add(btnRoja);
+    panel3.add(atras);
 
 
     setVisible(true);
     
     }
 
-    public static void main(String[] args) {
-        new PerfilAdministrador();
-    }
+  
 
+    private boolean verificarUsuarioEnBD(String sis) {
+        try {
+            Connection conexion = ConexionBD.getConexion();
+            PreparedStatement stmt = conexion.prepareStatement("SELECT * FROM usuario WHERE sis = ?");
+            stmt.setString(1, sis);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                String nombre = rs.getString("nombre");
+                String apellido = rs.getString("apellido");
+                String cor = rs.getString("correo");
+                int ci = rs.getInt("ci");
+                int sis1 = rs.getInt("sis");
+                int telefono=rs.getInt("telefono");
+                String tipoUsuario = rs.getString("tipo_usuario");
+                usuario usuario=new usuario(nombre,apellido,cor,ci,sis1,telefono,tipoUsuario);
+                SesionUsuario.iniciarSesion(usuario);
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }
