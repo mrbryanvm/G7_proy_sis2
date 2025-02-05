@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="usuarioTest" time="0.08" tests="11" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="LibroTest" time="0.06" tests="6" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="23"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,9 +15,9 @@
     <property name="user.country" value="US"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-23\bin"/>
-    <property name="sun.java.command" value="C:\Users\gusta\AppData\Local\Temp\surefire6794205112327540290\surefirebooter-20250205104304171_3.jar C:\Users\gusta\AppData\Local\Temp\surefire6794205112327540290 2025-02-05T10-43-03_818-jvmRun1 surefire-20250205104304171_1tmp surefire_0-20250205104304171_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\gusta\AppData\Local\Temp\surefire12647906661921385827\surefirebooter-20250205104949161_3.jar C:\Users\gusta\AppData\Local\Temp\surefire12647906661921385827 2025-02-05T10-49-48_852-jvmRun1 surefire-20250205104949161_1tmp surefire_0-20250205104949161_2tmp"/>
     <property name="jdk.debug" value="release"/>
-    <property name="test" value="usuarioTest"/>
+    <property name="test" value="LibroTest"/>
     <property name="surefire.test.class.path" value="C:\Users\gusta\Documents\Proyecto Sis2\Segundo Sprint\Desarrollo\V2\G7_proy_sis2\biblioteca\sistema-biblioteca\target\test-classes;C:\Users\gusta\Documents\Proyecto Sis2\Segundo Sprint\Desarrollo\V2\G7_proy_sis2\biblioteca\sistema-biblioteca\target\classes;C:\Users\gusta\.m2\repository\org\junit\jupiter\junit-jupiter\5.9.3\junit-jupiter-5.9.3.jar;C:\Users\gusta\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.9.3\junit-jupiter-api-5.9.3.jar;C:\Users\gusta\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\gusta\.m2\repository\org\junit\platform\junit-platform-commons\1.9.3\junit-platform-commons-1.9.3.jar;C:\Users\gusta\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\gusta\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.9.3\junit-jupiter-params-5.9.3.jar;C:\Users\gusta\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.9.3\junit-jupiter-engine-5.9.3.jar;C:\Users\gusta\.m2\repository\org\junit\platform\junit-platform-engine\1.9.3\junit-platform-engine-1.9.3.jar;C:\Users\gusta\.m2\repository\junit\junit\4.11\junit-4.11.jar;C:\Users\gusta\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="C:\Users\gusta"/>
@@ -31,7 +31,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\gusta\AppData\Local\Temp\surefire6794205112327540290\surefirebooter-20250205104304171_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\gusta\AppData\Local\Temp\surefire12647906661921385827\surefirebooter-20250205104949161_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="23.0.1+11-39"/>
@@ -60,15 +60,10 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="67.0"/>
   </properties>
-  <testcase name="testSetCorreoInvalido" classname="usuarioTest" time="0.038"/>
-  <testcase name="testTelefonoInvalido" classname="usuarioTest" time="0.002"/>
-  <testcase name="testNombreInvalido" classname="usuarioTest" time="0.001"/>
-  <testcase name="testSetNombreValido" classname="usuarioTest" time="0.001"/>
-  <testcase name="testSetTelefonoInvalido" classname="usuarioTest" time="0.001"/>
-  <testcase name="testCorreoInvalido" classname="usuarioTest" time="0.002"/>
-  <testcase name="testCIMenorQueCero" classname="usuarioTest" time="0.001"/>
-  <testcase name="testUsuarioCreacionExitosa" classname="usuarioTest" time="0.001"/>
-  <testcase name="testSetNombreInvalido" classname="usuarioTest" time="0.001"/>
-  <testcase name="testSetTelefonoValido" classname="usuarioTest" time="0.001"/>
-  <testcase name="testSetCorreoValido" classname="usuarioTest" time="0.001"/>
+  <testcase name="testPrestarLibro" classname="LibroTest" time="0.034"/>
+  <testcase name="testSettersAndGetters" classname="LibroTest" time="0.001"/>
+  <testcase name="testDisponibilidadAutomatica" classname="LibroTest" time="0.001"/>
+  <testcase name="testDevolverLibro" classname="LibroTest" time="0.001"/>
+  <testcase name="testValidaciones" classname="LibroTest" time="0.002"/>
+  <testcase name="testConstructor" classname="LibroTest" time="0"/>
 </testsuite>
